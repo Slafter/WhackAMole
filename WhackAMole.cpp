@@ -1,23 +1,36 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
+
+const float POINTER_SIZE_X = 100.0;
+const float POINTER_SIZE_Y = 100.0;
+const std::string POINTER_TEXTURE = "hammer.png";
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
+	sf::RenderWindow gameWindow(sf::VideoMode(800, 600), "Whack-A-Mole", sf::Style::Close);
 
-	while (window.isOpen())
+	sf::RectangleShape mousePointer(sf::Vector2f(POINTER_SIZE_X, POINTER_SIZE_Y));
+	sf::Texture mouseTexture;
+	mouseTexture.loadFromFile(POINTER_TEXTURE);
+	mousePointer.setTexture(&mouseTexture);
+
+	sf::Event evnt;
+	sf::Vector2i mousePos;
+
+	while (gameWindow.isOpen())
 	{
-		sf::Event event;
-		while (window.pollEvent(event))
+		while (gameWindow.pollEvent(evnt))
 		{
-			if (event.type == sf::Event::Closed)
-				window.close();
+			if (evnt.type == sf::Event::Closed)
+				gameWindow.close();
 		}
 
-		window.clear();
-		window.draw(shape);
-		window.display();
+		mousePos = sf::Mouse::getPosition(gameWindow);
+		mousePointer.setPosition((float)mousePos.x, (float)mousePos.y);
+
+		gameWindow.clear();
+		gameWindow.draw(mousePointer);
+		gameWindow.display();
 	}
 
 	return 0;
