@@ -1,4 +1,4 @@
 /Debug
-*.vcxproj
-*.vcxproj.filters
+/Release
+*.vcxproj*
 *.dll
