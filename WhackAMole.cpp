@@ -5,8 +5,8 @@ const int WINDOW_SIZE_X = 800;
 const int WINDOW_SIZE_Y = 600;
 
 const std::string MOLE_HOLE_TEXTURE = "images/ellipse.png";
-const int NUM_MOLE_HOLE_COLS = 12;
-const int NUM_MOLE_HOLE_ROWS = 12;
+const int NUM_MOLE_HOLE_COLS = 3;
+const int NUM_MOLE_HOLE_ROWS = 3;
 const float MOLE_HOLE_SIZE_X = 600.0 / (float)NUM_MOLE_HOLE_COLS;
 const float MOLE_HOLE_SIZE_Y = 300.0 / (float)NUM_MOLE_HOLE_ROWS;
 
