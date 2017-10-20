@@ -1,15 +1,19 @@
-#include <SFML\Graphics.hpp>
-
-const std::string MOLE_TEXTURE = "images/turtle.png";
+#pragma once
+#include <SFML/Graphics.hpp>
 
 class Mole : public sf::RectangleShape
 {
 public:
+	const std::string MOLE_TEXTURE = "images/turtle.png";
+
+public:
+	Mole();
 	Mole(sf::Vector2f size, int xCoordinate, int yCoordinate);
-	int getXCoord();
-	int getYCoord();
-private:
+
+public:
+	bool isActive;
 	int xCoordinate;
 	int yCoordinate;
 	sf::Texture moleTexture;
+
 };
