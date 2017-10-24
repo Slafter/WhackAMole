@@ -5,16 +5,17 @@ PlayScreen::PlayScreen()
 
 }
 
-PlayScreen::PlayScreen(int numCols, int numRows, sf::Vector2f windowSize) : background(windowSize)
+PlayScreen::PlayScreen(int numCols, int numRows, sf::Vector2f windowSize) : background(windowSize), mousePointer(sf::Vector2f(MOUSE_POINTER_SIZE_X, MOUSE_POINTER_SIZE_Y))
 {
+	molesWhacked = 0;
+
 	background.setFillColor(sf::Color::Green); // TODO: replace with sf::Texture
 
-	mousePointer = new sf::RectangleShape(sf::Vector2f(MOUSE_POINTER_SIZE_X, MOUSE_POINTER_SIZE_Y));
 	mouseTexture.loadFromFile(MOUSE_TEXTURE);
-	mousePointer->setTexture(&mouseTexture);
+	mousePointer.setTexture(&mouseTexture);
 
-	float moleHoleSizeX = 600.0f / (float)numCols;
-	float moleHoleSizeY = 300.0f / (float)numRows;
+	moleHoleSizeX = 600.0f / (float)numCols;
+	moleHoleSizeY = 300.0f / (float)numRows;
 	float xOrigin = 450.0f / numCols;
 	float yOrigin = 50.0f + (300.0f / numRows);
 	float xOffset = (windowSize.x - xOrigin / 2.0f) / (float)numCols;
@@ -44,4 +45,47 @@ PlayScreen::PlayScreen(int numCols, int numRows, sf::Vector2f windowSize) : back
 			moles[i][j].setPosition((float)(i * xOffset + xOrigin), (float)(j * yOffset + yOrigin));
 		}
 	}
+
+}
+
+void PlayScreen::handleMouseClick(sf::Vector2i mousePos)
+{
+	// TODO pause button, audio
+
+	for (int i = 0; i < NUM_MOLE_HOLE_COLS; i++)
+	{
+		for (int j = 0; j < NUM_MOLE_HOLE_ROWS; j++)
+		{
+			if (this->mouseClicksMole(mousePos, i, j) && moles[i][j].isActive)
+			{
+				moles[i][j].isActive = false;
+				molesWhacked++;
+			}
+		}
+	}
+}
+
+bool PlayScreen::mouseClicksMole(sf::Vector2i mousePos, int xCoord, int yCoord)
+{
+	int moleCoordX1 = (int)moles[xCoord][yCoord].getPosition().x - (int)(moleHoleSizeY / 2.0f); // size Y is not a typo
+	int moleCoordX2 = moleCoordX1 + (int)moleHoleSizeY;
+	int moleCoordY1 = (int)moles[xCoord][yCoord].getPosition().y - (int)(moleHoleSizeY / 2.0f);
+	int moleCoordY2 = moleCoordY1 + (int)moleHoleSizeY;
+
+	if (mousePos.x > moleCoordX1 && mousePos.x < moleCoordX2)
+	{
+		if (mousePos.y > moleCoordY1 && mousePos.y < moleCoordY2)
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+	else
+		return false;
+}
+
+int PlayScreen::getMolesWhacked()
+{
+	return molesWhacked;
 }

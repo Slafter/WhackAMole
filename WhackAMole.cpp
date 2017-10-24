@@ -8,7 +8,6 @@ int main()
 	GameWindow gameWindow(sf::Style::Close);
 
 	sf::Event evnt;
-	sf::Vector2i mousePos;
 
 	while (gameWindow.isOpen())
 	{
@@ -16,9 +15,14 @@ int main()
 		{
 			if (evnt.type == sf::Event::Closed)
 				gameWindow.close();
+
+			if (evnt.type == sf::Event::MouseButtonReleased)
+			{
+				gameWindow.handleMouseClick();
+			}
 		}
 
-		gameWindow.drawPlayScreen();
+		gameWindow.displayActiveScreen();
 
 	}
 

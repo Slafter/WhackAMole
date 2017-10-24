@@ -5,9 +5,31 @@ GameWindow::GameWindow(sf::Uint32 style)
 	playScreen(PlayScreen::NUM_MOLE_HOLE_COLS, PlayScreen::NUM_MOLE_HOLE_ROWS, sf::Vector2f((float)WINDOW_SIZE_X, (float)WINDOW_SIZE_Y))
 {
 	this->setMouseCursorVisible(false);
+	this->activeScreen = PLAY_SCREEN; // TODO: remove once other screens are implemented
 }
 
-void GameWindow::drawPlayScreen()
+void GameWindow::displayActiveScreen()
+{
+	if (activeScreen == START_SCREEN)
+	{
+		this->displayStartScreen();
+	}
+	else if (activeScreen == PLAY_SCREEN)
+	{
+		this->displayPlayScreen();
+	}
+	else if (activeScreen == SCORE_SCREEN)
+	{
+		this->displayScoreScreen();
+	}
+}
+
+void GameWindow::displayStartScreen()
+{
+	// TODO
+}
+
+void GameWindow::displayPlayScreen()
 {
 	this->clear();
 	this->draw(playScreen.background);
@@ -30,11 +52,24 @@ void GameWindow::drawPlayScreen()
 		}
 	}
 
-	sf::Vector2i mousePos = sf::Mouse::getPosition(*this);
-	playScreen.mousePointer->setPosition((float)mousePos.x, (float)mousePos.y);
+	mousePos = sf::Mouse::getPosition(*this);
+	playScreen.mousePointer.setPosition((float)mousePos.x, (float)mousePos.y);
 	
-	this->draw(*playScreen.mousePointer);
+	this->draw(playScreen.mousePointer);
 
 	this->display();
 
+}
+
+void GameWindow::displayScoreScreen()
+{
+	// TODO
+}
+
+void GameWindow::handleMouseClick()
+{
+	if (activeScreen == PLAY_SCREEN)
+	{
+		playScreen.handleMouseClick(mousePos);
+	}
 }

@@ -6,7 +6,7 @@ Mole::Mole()
 	this->yCoordinate = 0;
 	moleTexture.loadFromFile(MOLE_TEXTURE);
 	this->setTexture(&moleTexture);
-	this->isActive = false;
+	this->isActive = true;
 }
 
 Mole::Mole(sf::Vector2f size, int xCoordinate, int yCoordinate) : sf::RectangleShape(size)
@@ -15,5 +15,5 @@ Mole::Mole(sf::Vector2f size, int xCoordinate, int yCoordinate) : sf::RectangleS
 	this->yCoordinate = yCoordinate;
 	moleTexture.loadFromFile(MOLE_TEXTURE);
 	this->setTexture(&moleTexture);
-	this->isActive = false;
+	this->isActive = true;
 }
