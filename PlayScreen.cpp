@@ -7,7 +7,10 @@ PlayScreen::PlayScreen()
 
 PlayScreen::PlayScreen(int numCols, int numRows, sf::Vector2f windowSize) : background(windowSize), mousePointer(sf::Vector2f(MOUSE_POINTER_SIZE_X, MOUSE_POINTER_SIZE_Y))
 {
+	std::srand(time(0));
+
 	molesWhacked = 0;
+	deltaTime = 0;
 
 	background.setFillColor(sf::Color::Green); // TODO: replace with sf::Texture
 
@@ -88,4 +91,30 @@ bool PlayScreen::mouseClicksMole(sf::Vector2i mousePos, int xCoord, int yCoord)
 int PlayScreen::getMolesWhacked()
 {
 	return molesWhacked;
+}
+
+void PlayScreen::updateActiveMoles()
+{
+	for (int i = 0; i < NUM_MOLE_HOLE_COLS; i++)
+	{
+		for (int j = 0; j < NUM_MOLE_HOLE_ROWS; j++)
+		{
+			moles[i][j].updateActiveStatus();
+		}
+	}
+}
+
+void PlayScreen::updateMoleCreation()
+{
+	deltaTime = moleCreationTimer.getElapsedTime().asSeconds();
+
+	if (deltaTime > CREATE_MOLE_FREQ)
+	{
+		int i = rand() % NUM_MOLE_HOLE_COLS;
+		int j = rand() % NUM_MOLE_HOLE_ROWS;
+
+		moles[i][j].isActive = true;
+		moles[i][j].restartTimer();
+		moleCreationTimer.restart();
+	}
 }

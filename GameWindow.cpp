@@ -73,3 +73,21 @@ void GameWindow::handleMouseClick()
 		playScreen.handleMouseClick(mousePos);
 	}
 }
+
+void GameWindow::updateActiveScreenItems()
+{
+	if (activeScreen == START_SCREEN)
+	{
+
+	}
+	else if (activeScreen == PLAY_SCREEN)
+	{
+		// TODO update Timer Bar
+		playScreen.updateMoleCreation();
+		playScreen.updateActiveMoles();
+	}
+	else if (activeScreen == SCORE_SCREEN)
+	{
+
+	}
+}

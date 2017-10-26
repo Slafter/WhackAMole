@@ -15,6 +15,7 @@ public:
 	GameWindow(sf::Uint32 style);
 	void handleMouseClick();
 	void displayActiveScreen();
+	void updateActiveScreenItems();
 
 public:
 	PlayScreen playScreen;

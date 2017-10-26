@@ -20,8 +20,9 @@ int main()
 			{
 				gameWindow.handleMouseClick();
 			}
-		}
+		}	
 
+		gameWindow.updateActiveScreenItems();
 		gameWindow.displayActiveScreen();
 
 	}

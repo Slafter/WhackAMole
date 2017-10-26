@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <cstdlib>
 #include "Mole.h"
 
 class PlayScreen
@@ -11,6 +12,7 @@ public:
 	const float MOUSE_POINTER_SIZE_Y = 100.0f;
 	const static int NUM_MOLE_HOLE_COLS = 8;
 	const static int NUM_MOLE_HOLE_ROWS = 8;
+	const float CREATE_MOLE_FREQ = 2.0f;
 
 public:
 	PlayScreen();
@@ -20,17 +22,21 @@ public:
 	sf::RectangleShape moleHoles[NUM_MOLE_HOLE_COLS][NUM_MOLE_HOLE_ROWS];
 	Mole moles[NUM_MOLE_HOLE_COLS][NUM_MOLE_HOLE_ROWS];
 	void handleMouseClick(sf::Vector2i mousePos);
+	void updateActiveMoles();
+	void updateMoleCreation();
 	int getMolesWhacked();
 
 private:
 	bool mouseClicksMole(sf::Vector2i mousePos, int xCoord, int yCoord);
-
+	
 private:
 	sf::Texture mouseTexture;
 	sf::Texture moleHoleTexture;
 	int molesWhacked;
 	float moleHoleSizeX;
 	float moleHoleSizeY;
+	sf::Clock moleCreationTimer;
+	float deltaTime;
 
 	// TODO: sf::Rectangle timerBar
 };
