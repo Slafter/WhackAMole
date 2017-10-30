@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <cstdlib>
+#include <vector>
 #include "Mole.h"
 
 class PlayScreen
@@ -10,9 +11,9 @@ public:
 	const std::string MOUSE_TEXTURE = "images/hammer.png";
 	const float MOUSE_POINTER_SIZE_X = 100.0f;
 	const float MOUSE_POINTER_SIZE_Y = 100.0f;
-	const static int NUM_MOLE_HOLE_COLS = 8;
-	const static int NUM_MOLE_HOLE_ROWS = 8;
-	const float CREATE_MOLE_FREQ = 2.0f;
+	const static int NUM_MOLE_HOLE_COLS = 4;
+	const static int NUM_MOLE_HOLE_ROWS = 4;
+	const float CREATE_MOLE_FREQ = 0.5f;
 
 public:
 	PlayScreen();

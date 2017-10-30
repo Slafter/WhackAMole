@@ -110,11 +110,28 @@ void PlayScreen::updateMoleCreation()
 
 	if (deltaTime > CREATE_MOLE_FREQ)
 	{
-		int i = rand() % NUM_MOLE_HOLE_COLS;
-		int j = rand() % NUM_MOLE_HOLE_ROWS;
+		std::vector<Mole*> inactiveMoles;
+		int numActive = 0;
 
-		moles[i][j].isActive = true;
-		moles[i][j].restartTimer();
+		for (int i = 0; i < NUM_MOLE_HOLE_COLS; i++)
+		{
+			for (int j = 0; j < NUM_MOLE_HOLE_ROWS; j++)
+			{
+				if (!moles[i][j].isActive)
+				{
+					inactiveMoles.push_back(&moles[i][j]);
+					numActive++;
+				}
+			}
+		}
+
+		if (numActive > 0)
+		{
+			int randMoleIndex = rand() % numActive;
+			inactiveMoles[randMoleIndex]->isActive = true;
+			inactiveMoles[randMoleIndex]->restartTimer();
+		}
+
 		moleCreationTimer.restart();
 	}
 }
