@@ -13,7 +13,11 @@ public:
 	const float MOUSE_POINTER_SIZE_Y = 100.0f;
 	const static int NUM_MOLE_HOLE_COLS = 4;
 	const static int NUM_MOLE_HOLE_ROWS = 4;
-	const float CREATE_MOLE_FREQ = 0.5f;
+	const float STARTING_MOLE_FREQ = 2.5f;
+	const float SECOND_MOLE_FREQ = STARTING_MOLE_FREQ / 2.0f;
+	const float THIRD_MOLE_FREQ = SECOND_MOLE_FREQ / 3.0f;
+	const float SECOND_PHASE_START_TIME = 10.0f;
+	const float THIRD_PHASE_START_TIME = 20.0f;
 
 public:
 	PlayScreen();
@@ -24,6 +28,7 @@ public:
 	Mole moles[NUM_MOLE_HOLE_COLS][NUM_MOLE_HOLE_ROWS];
 	void handleMouseClick(sf::Vector2i mousePos);
 	void updateActiveMoles();
+	void updateMoleCreationRate();
 	void updateMoleCreation();
 	int getMolesWhacked();
 
@@ -36,8 +41,10 @@ private:
 	int molesWhacked;
 	float moleHoleSizeX;
 	float moleHoleSizeY;
+	sf::Clock timerBarClock;
+	float createMoleFreq;
 	sf::Clock moleCreationTimer;
-	float deltaTime;
+	float moleDeltaTime;
 
 	// TODO: sf::Rectangle timerBar
 };

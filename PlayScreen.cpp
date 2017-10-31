@@ -10,7 +10,8 @@ PlayScreen::PlayScreen(int numCols, int numRows, sf::Vector2f windowSize) : back
 	std::srand(time(0));
 
 	molesWhacked = 0;
-	deltaTime = 0;
+	moleDeltaTime = 0;
+	createMoleFreq = STARTING_MOLE_FREQ;
 
 	background.setFillColor(sf::Color::Green); // TODO: replace with sf::Texture
 
@@ -106,9 +107,9 @@ void PlayScreen::updateActiveMoles()
 
 void PlayScreen::updateMoleCreation()
 {
-	deltaTime = moleCreationTimer.getElapsedTime().asSeconds();
+	moleDeltaTime = moleCreationTimer.getElapsedTime().asSeconds();
 
-	if (deltaTime > CREATE_MOLE_FREQ)
+	if (moleDeltaTime > createMoleFreq)
 	{
 		std::vector<Mole*> inactiveMoles;
 		int numActive = 0;
@@ -134,4 +135,17 @@ void PlayScreen::updateMoleCreation()
 
 		moleCreationTimer.restart();
 	}
+}
+
+void PlayScreen::updateMoleCreationRate()
+{
+	if (timerBarClock.getElapsedTime().asSeconds() > THIRD_PHASE_START_TIME)
+	{
+		createMoleFreq = THIRD_MOLE_FREQ;
+	}
+	else if (timerBarClock.getElapsedTime().asSeconds() > SECOND_PHASE_START_TIME)
+	{
+		createMoleFreq = SECOND_MOLE_FREQ;
+	}
+
 }

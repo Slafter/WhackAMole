@@ -83,6 +83,7 @@ void GameWindow::updateActiveScreenItems()
 	else if (activeScreen == PLAY_SCREEN)
 	{
 		// TODO update Timer Bar
+		playScreen.updateMoleCreationRate();
 		playScreen.updateMoleCreation();
 		playScreen.updateActiveMoles();
 	}
