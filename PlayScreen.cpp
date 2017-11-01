@@ -101,6 +101,7 @@ void PlayScreen::updateActiveMoles()
 		for (int j = 0; j < NUM_MOLE_HOLE_ROWS; j++)
 		{
 			moles[i][j].updateActiveStatus();
+			moles[i][j].updateTexture();
 		}
 	}
 }
@@ -130,6 +131,8 @@ void PlayScreen::updateMoleCreation()
 		{
 			int randMoleIndex = rand() % numActive;
 			inactiveMoles[randMoleIndex]->isActive = true;
+			inactiveMoles[randMoleIndex]->animTimer.restart(); ////
+			inactiveMoles[randMoleIndex]->moleAnim.reset(); ////
 			inactiveMoles[randMoleIndex]->restartTimer();
 		}
 

@@ -7,7 +7,7 @@
 class PlayScreen
 {
 public:
-	const std::string MOLE_HOLE_TEXTURE = "images/ellipse.png";
+	const std::string MOLE_HOLE_TEXTURE = "images/ellipse2.png";
 	const std::string MOUSE_TEXTURE = "images/hammer.png";
 	const float MOUSE_POINTER_SIZE_X = 100.0f;
 	const float MOUSE_POINTER_SIZE_Y = 100.0f;
