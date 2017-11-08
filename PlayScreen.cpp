@@ -1,11 +1,7 @@
 #include "PlayScreen.h"
 
-PlayScreen::PlayScreen()
-{
-
-}
-
-PlayScreen::PlayScreen(int numCols, int numRows, sf::Vector2f windowSize) : background(windowSize), mousePointer(sf::Vector2f(MOUSE_POINTER_SIZE_X, MOUSE_POINTER_SIZE_Y))
+PlayScreen::PlayScreen(int numCols, int numRows, sf::Vector2f windowSize) 
+	: background(windowSize), mousePointer(sf::Vector2f(MOUSE_POINTER_SIZE_X, MOUSE_POINTER_SIZE_Y))
 {
 	std::srand(time(0));
 
@@ -40,16 +36,26 @@ PlayScreen::PlayScreen(int numCols, int numRows, sf::Vector2f windowSize) : back
 
 	for (int i = 0; i < numCols; i++)
 	{
+
 		for (int j = 0; j < numRows; j++)
 		{
-			moles[i][j].setSize(sf::Vector2f(moleHoleSizeY, moleHoleSizeY)); // moles are squares, henze a (y, y) size
-			moles[i][j].xCoordinate = i;
-			moles[i][j].yCoordinate = j;
-			moles[i][j].setOrigin(moleHoleSizeY / 2.0f, moleHoleSizeY / 2.0f);
-			moles[i][j].setPosition((float)(i * xOffset + xOrigin), (float)(j * yOffset + yOrigin));
+			moles[i][j] = new Mole(sf::Vector2f(moleHoleSizeY, moleHoleSizeY), i, j);
+			moles[i][j]->setOrigin(moleHoleSizeY / 2.0f, moleHoleSizeY / 2.0f);
+			moles[i][j]->setPosition((float)(i * xOffset + xOrigin), (float)(j * yOffset + yOrigin));
 		}
 	}
 
+}
+
+PlayScreen::~PlayScreen()
+{
+	for (int i = 0; i < NUM_MOLE_HOLE_COLS; i++)
+	{
+		for (int j = 0; j < NUM_MOLE_HOLE_ROWS; j++)
+		{
+			delete moles[i][j];
+		}
+	}
 }
 
 void PlayScreen::handleMouseClick(sf::Vector2i mousePos)
@@ -60,9 +66,9 @@ void PlayScreen::handleMouseClick(sf::Vector2i mousePos)
 	{
 		for (int j = 0; j < NUM_MOLE_HOLE_ROWS; j++)
 		{
-			if (this->mouseClicksMole(mousePos, i, j) && moles[i][j].isActive)
+			if (this->mouseClicksMole(mousePos, i, j) && moles[i][j]->isActive)
 			{
-				moles[i][j].isActive = false;
+				moles[i][j]->isActive = false;
 				molesWhacked++;
 			}
 		}
@@ -71,9 +77,9 @@ void PlayScreen::handleMouseClick(sf::Vector2i mousePos)
 
 bool PlayScreen::mouseClicksMole(sf::Vector2i mousePos, int xCoord, int yCoord)
 {
-	int moleCoordX1 = (int)moles[xCoord][yCoord].getPosition().x - (int)(moleHoleSizeY / 2.0f); // size Y is not a typo
+	int moleCoordX1 = (int)moles[xCoord][yCoord]->getPosition().x - (int)(moleHoleSizeY / 2.0f); // size Y is not a typo
 	int moleCoordX2 = moleCoordX1 + (int)moleHoleSizeY;
-	int moleCoordY1 = (int)moles[xCoord][yCoord].getPosition().y - (int)(moleHoleSizeY / 2.0f);
+	int moleCoordY1 = (int)moles[xCoord][yCoord]->getPosition().y - (int)(moleHoleSizeY / 2.0f);
 	int moleCoordY2 = moleCoordY1 + (int)moleHoleSizeY;
 
 	if (mousePos.x > moleCoordX1 && mousePos.x < moleCoordX2)
@@ -100,8 +106,8 @@ void PlayScreen::updateActiveMoles()
 	{
 		for (int j = 0; j < NUM_MOLE_HOLE_ROWS; j++)
 		{
-			moles[i][j].updateActiveStatus();
-			moles[i][j].updateTexture();
+			moles[i][j]->updateActiveStatus();
+			moles[i][j]->updateTexture();
 		}
 	}
 }
@@ -112,6 +118,8 @@ void PlayScreen::updateMoleCreation()
 
 	if (moleDeltaTime > createMoleFreq)
 	{
+		moleCreationTimer.restart();
+
 		std::vector<Mole*> inactiveMoles;
 		int numActive = 0;
 
@@ -119,9 +127,9 @@ void PlayScreen::updateMoleCreation()
 		{
 			for (int j = 0; j < NUM_MOLE_HOLE_ROWS; j++)
 			{
-				if (!moles[i][j].isActive)
+				if (!moles[i][j]->isActive)
 				{
-					inactiveMoles.push_back(&moles[i][j]);
+					inactiveMoles.push_back(moles[i][j]);
 					numActive++;
 				}
 			}
@@ -131,12 +139,11 @@ void PlayScreen::updateMoleCreation()
 		{
 			int randMoleIndex = rand() % numActive;
 			inactiveMoles[randMoleIndex]->isActive = true;
-			inactiveMoles[randMoleIndex]->animTimer.restart(); ////
-			inactiveMoles[randMoleIndex]->moleAnim.reset(); ////
-			inactiveMoles[randMoleIndex]->restartTimer();
+			inactiveMoles[randMoleIndex]->restartAnimTimer();
+			inactiveMoles[randMoleIndex]->resetAnimation();
+			inactiveMoles[randMoleIndex]->restartActiveTimer();
 		}
-
-		moleCreationTimer.restart();
+		
 	}
 }
 

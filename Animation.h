@@ -4,7 +4,6 @@
 class Animation
 {
 public:
-	Animation();
 	Animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime);
 
 public:
@@ -12,7 +11,7 @@ public:
 	void update(float deltaTime);
 	void reset();
 
-public:
+private:
 	sf::Vector2u imageCount;
 	sf::Vector2u currentImage;
 	float totalTime;

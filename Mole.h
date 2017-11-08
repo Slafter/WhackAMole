@@ -12,24 +12,25 @@ public:
 
 public:
 	Mole();
+	~Mole();
 	Mole(sf::Vector2f size, int xCoordinate, int yCoordinate);
 	void updateActiveStatus();
-	void restartTimer();
+	void restartActiveTimer();
+	void restartAnimTimer();
 	void updateTexture();
-	sf::Clock animTimer;
-	Animation moleAnim;
+	void resetAnimation();
 
 public:
 	bool isActive;
 	int xCoordinate;
 	int yCoordinate;
-	sf::Texture moleTexture;
-
 
 private:
-	float deltaTime;
-	sf::Clock moleTimer;
+	sf::Texture moleTexture;
+	float activeDeltaTime;
+	sf::Clock moleActiveTimer;
 	float animDeltaTime;
-	
+	Animation* moleAnim;
+	sf::Clock animTimer;
 
 };

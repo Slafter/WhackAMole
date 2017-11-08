@@ -1,63 +1,59 @@
 #include "Mole.h"
 
-Mole::Mole()
-{
-	xCoordinate = 0;
-	yCoordinate = 0;
-
-	animDeltaTime = 0.0f;
-
-	moleTexture.loadFromFile(MOLE_TEXTURE);
-
-	moleAnim.imageCount = sf::Vector2u(TEXTURE_COLS, TEXTURE_ROWS);
-	moleAnim.switchTime = ACTIVE_MOLE_DURATION / (float)(TEXTURE_COLS * TEXTURE_ROWS);
-	moleAnim.totalTime = 0.0f;
-	moleAnim.currentImage.x = 0;
-	moleAnim.currentImage.y = 0;
-	moleAnim.uvRect.width = moleTexture.getSize().x / (float)(moleAnim.imageCount.x);
-	moleAnim.uvRect.height = moleTexture.getSize().y / (float)(moleAnim.imageCount.y);
-
-	// moleTexture.loadFromFile(MOLE_TEXTURE);
-	this->setTexture(&moleTexture);
-
-	isActive = false;
-	deltaTime = 0.0f;
-}
-
 Mole::Mole(sf::Vector2f size, int xCoordinate, int yCoordinate) : sf::RectangleShape(size)
 {
 	this->xCoordinate = xCoordinate;
 	this->yCoordinate = yCoordinate;
+
+	animDeltaTime = 0.0f;
+
 	moleTexture.loadFromFile(MOLE_TEXTURE);
 	this->setTexture(&moleTexture);
+	moleAnim = new Animation(&moleTexture, sf::Vector2u(TEXTURE_COLS, TEXTURE_ROWS), ACTIVE_MOLE_DURATION / (float)(TEXTURE_COLS * TEXTURE_ROWS));
+
 	isActive = false;
-	deltaTime = 0.0f;
+	activeDeltaTime = 0.0f;
+}
+
+Mole::~Mole()
+{
+	delete moleAnim;
 }
 
 void Mole::updateActiveStatus()
 {
 	if (isActive)
 	{
-		deltaTime = moleTimer.getElapsedTime().asSeconds();
+		activeDeltaTime = moleActiveTimer.getElapsedTime().asSeconds();
 
-		if (deltaTime > ACTIVE_MOLE_DURATION)
+		if (activeDeltaTime > ACTIVE_MOLE_DURATION)
 		{
 			isActive = false;
-			moleTimer.restart();
+			moleActiveTimer.restart();
 		}
 	}
 }
 
-void Mole::restartTimer()
+void Mole::restartActiveTimer()
 {
-	moleTimer.restart();
+	moleActiveTimer.restart();
 }
 
 void Mole::updateTexture()
 {
 	animDeltaTime = animTimer.getElapsedTime().asSeconds();
 	animTimer.restart();
-	moleAnim.update(animDeltaTime);
-	this->setTextureRect(moleAnim.uvRect);
+	moleAnim->update(animDeltaTime);
+	this->setTextureRect(moleAnim->uvRect);
 		
+}
+
+void Mole::resetAnimation()
+{
+	moleAnim->reset();
+}
+
+void Mole::restartAnimTimer()
+{
+	animTimer.restart();
 }

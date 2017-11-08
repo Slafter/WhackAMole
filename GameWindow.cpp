@@ -45,9 +45,9 @@ void GameWindow::displayPlayScreen()
 	{
 		for (int j = 0; j < PlayScreen::NUM_MOLE_HOLE_ROWS; j++)
 		{
-			if (playScreen.moles[i][j].isActive)
+			if (playScreen.moles[i][j]->isActive)
 			{
-				this->draw(playScreen.moles[i][j]);
+				this->draw((*playScreen.moles[i][j]));
 			}
 		}
 	}
