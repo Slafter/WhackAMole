@@ -13,24 +13,35 @@ public:
 	const float MOUSE_POINTER_SIZE_Y = 100.0f;
 	const static int NUM_MOLE_HOLE_COLS = 4;
 	const static int NUM_MOLE_HOLE_ROWS = 4;
+	const float GAMEOVER_TIME = 30.0f; // game length in seconds
 	const float STARTING_MOLE_FREQ = 2.5f;
 	const float SECOND_MOLE_FREQ = STARTING_MOLE_FREQ / 2.0f;
 	const float THIRD_MOLE_FREQ = SECOND_MOLE_FREQ / 3.0f;
 	const float SECOND_PHASE_START_TIME = 10.0f;
 	const float THIRD_PHASE_START_TIME = 20.0f;
+	const float TIMER_BAR_POS_X = 300.0f;
+	const float TIMER_BAR_POS_Y = 25.0f;
+	const float TIMER_BAR_SIZE_X = 250.0f;
+	const float TIMER_BAR_SIZE_Y = 25.0f;
 
 public:
 	PlayScreen(int numCols, int numRows, sf::Vector2f);
 	~PlayScreen();
-	sf::RectangleShape background; // TODO: sf::Texture backgroundTexture;
-	sf::RectangleShape mousePointer;
-	sf::RectangleShape moleHoles[NUM_MOLE_HOLE_COLS][NUM_MOLE_HOLE_ROWS];
-	Mole* moles[NUM_MOLE_HOLE_COLS][NUM_MOLE_HOLE_ROWS];
 	void handleMouseClick(sf::Vector2i mousePos);
 	void updateActiveMoles();
 	void updateMoleCreationRate();
 	void updateMoleCreation();
+	void updateTimerBar();
+	bool isGameOver();
 	int getMolesWhacked();
+
+public:
+	sf::RectangleShape background; // TODO: sf::Texture backgroundTexture;
+	sf::RectangleShape mousePointer;
+	sf::RectangleShape timerBar;
+	sf::RectangleShape timerBarOutline;
+	sf::RectangleShape moleHoles[NUM_MOLE_HOLE_COLS][NUM_MOLE_HOLE_ROWS];
+	Mole* moles[NUM_MOLE_HOLE_COLS][NUM_MOLE_HOLE_ROWS];
 
 private:
 	bool mouseClicksMole(sf::Vector2i mousePos, int xCoord, int yCoord);
@@ -45,6 +56,4 @@ private:
 	float createMoleFreq;
 	sf::Clock moleCreationTimer;
 	float moleDeltaTime;
-
-	// TODO: sf::Rectangle timerBar
 };

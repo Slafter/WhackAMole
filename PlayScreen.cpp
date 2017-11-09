@@ -1,7 +1,10 @@
 #include "PlayScreen.h"
 
 PlayScreen::PlayScreen(int numCols, int numRows, sf::Vector2f windowSize) 
-	: background(windowSize), mousePointer(sf::Vector2f(MOUSE_POINTER_SIZE_X, MOUSE_POINTER_SIZE_Y))
+	: background(windowSize), 
+	mousePointer(sf::Vector2f(MOUSE_POINTER_SIZE_X, MOUSE_POINTER_SIZE_Y)),
+	timerBar(sf::Vector2f(TIMER_BAR_SIZE_X, TIMER_BAR_SIZE_Y)),
+	timerBarOutline(sf::Vector2f(TIMER_BAR_SIZE_X + 5.0f, TIMER_BAR_SIZE_Y + 5.0f))
 {
 	std::srand(time(0));
 
@@ -9,10 +12,15 @@ PlayScreen::PlayScreen(int numCols, int numRows, sf::Vector2f windowSize)
 	moleDeltaTime = 0;
 	createMoleFreq = STARTING_MOLE_FREQ;
 
-	background.setFillColor(sf::Color::Green); // TODO: replace with sf::Texture
+	background.setFillColor(sf::Color(40, 190, 0)); // TODO: replace with sf::Texture
 
 	mouseTexture.loadFromFile(MOUSE_TEXTURE);
 	mousePointer.setTexture(&mouseTexture);
+
+	timerBar.setFillColor(sf::Color(0, 128, 255)); // TODO: replace with sf::Texture
+	timerBar.setPosition(sf::Vector2f(TIMER_BAR_POS_X, TIMER_BAR_POS_Y));
+	timerBarOutline.setFillColor(sf::Color(30, 158, 255));
+	timerBarOutline.setPosition(sf::Vector2f(TIMER_BAR_POS_X - 2.5f, TIMER_BAR_POS_Y - 2.5f));
 
 	moleHoleSizeX = 600.0f / (float)numCols;
 	moleHoleSizeY = 300.0f / (float)numRows;
@@ -158,4 +166,19 @@ void PlayScreen::updateMoleCreationRate()
 		createMoleFreq = SECOND_MOLE_FREQ;
 	}
 
+}
+
+void PlayScreen::updateTimerBar()
+{
+	timerBar.setSize(sf::Vector2f(((GAMEOVER_TIME - timerBarClock.getElapsedTime().asSeconds()) / GAMEOVER_TIME) * TIMER_BAR_SIZE_X, TIMER_BAR_SIZE_Y));
+}
+
+bool PlayScreen::isGameOver()
+{
+	if (timerBarClock.getElapsedTime().asSeconds() >= GAMEOVER_TIME)
+	{
+		return true;
+	}
+	else
+		return false;
 }

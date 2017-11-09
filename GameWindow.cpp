@@ -52,6 +52,8 @@ void GameWindow::displayPlayScreen()
 		}
 	}
 
+	this->draw(playScreen.timerBarOutline);
+	this->draw(playScreen.timerBar);
 	mousePos = sf::Mouse::getPosition(*this);
 	playScreen.mousePointer.setPosition((float)mousePos.x, (float)mousePos.y);
 	
@@ -82,10 +84,15 @@ void GameWindow::updateActiveScreenItems()
 	}
 	else if (activeScreen == PLAY_SCREEN)
 	{
-		// TODO update Timer Bar
+		playScreen.updateTimerBar();
 		playScreen.updateMoleCreationRate();
 		playScreen.updateMoleCreation();
 		playScreen.updateActiveMoles();
+		if (playScreen.isGameOver())
+		{
+			activeScreen = SCORE_SCREEN;
+		}
+
 	}
 	else if (activeScreen == SCORE_SCREEN)
 	{
