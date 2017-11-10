@@ -4,7 +4,7 @@ PlayScreen::PlayScreen(int numCols, int numRows, sf::Vector2f windowSize)
 	: background(windowSize), 
 	mousePointer(sf::Vector2f(MOUSE_POINTER_SIZE_X, MOUSE_POINTER_SIZE_Y)),
 	timerBar(sf::Vector2f(TIMER_BAR_SIZE_X, TIMER_BAR_SIZE_Y)),
-	timerBarOutline(sf::Vector2f(TIMER_BAR_SIZE_X + 5.0f, TIMER_BAR_SIZE_Y + 5.0f))
+	timerBarOutline(sf::Vector2f(TIMER_BAR_SIZE_X + 5.0f, TIMER_BAR_SIZE_Y + 4.0f))
 {
 	std::srand(time(0));
 
@@ -12,15 +12,19 @@ PlayScreen::PlayScreen(int numCols, int numRows, sf::Vector2f windowSize)
 	moleDeltaTime = 0;
 	createMoleFreq = STARTING_MOLE_FREQ;
 
-	background.setFillColor(sf::Color(40, 190, 0)); // TODO: replace with sf::Texture
+	backgroundTexture.loadFromFile(BACKGROUND_TEXTURE);
+	background.setTexture(&backgroundTexture);
 
 	mouseTexture.loadFromFile(MOUSE_TEXTURE);
 	mousePointer.setTexture(&mouseTexture);
 
-	timerBar.setFillColor(sf::Color(0, 128, 255)); // TODO: replace with sf::Texture
+	timerBarTexture.loadFromFile(TIMERBAR_TEXTURE);
+	timerBar.setTexture(&timerBarTexture);
 	timerBar.setPosition(sf::Vector2f(TIMER_BAR_POS_X, TIMER_BAR_POS_Y));
-	timerBarOutline.setFillColor(sf::Color(30, 158, 255));
+	timerBarOutline.setFillColor(sf::Color(sf::Color::White));
 	timerBarOutline.setPosition(sf::Vector2f(TIMER_BAR_POS_X - 2.5f, TIMER_BAR_POS_Y - 2.5f));
+	timerBarOutline.setOutlineColor(sf::Color::Black);
+	timerBarOutline.setOutlineThickness(2.5f);
 
 	moleHoleSizeX = 600.0f / (float)numCols;
 	moleHoleSizeY = 300.0f / (float)numRows;
