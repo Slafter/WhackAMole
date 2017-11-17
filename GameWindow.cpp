@@ -2,10 +2,11 @@
 
 GameWindow::GameWindow(sf::Uint32 style) 
 	: sf::RenderWindow(sf::VideoMode(WINDOW_SIZE_X, WINDOW_SIZE_Y), "Whack-A-Mole", style), 
-	playScreen(PlayScreen::NUM_MOLE_HOLE_COLS, PlayScreen::NUM_MOLE_HOLE_ROWS, sf::Vector2f((float)WINDOW_SIZE_X, (float)WINDOW_SIZE_Y))
+	playScreen(PlayScreen::NUM_MOLE_HOLE_COLS, PlayScreen::NUM_MOLE_HOLE_ROWS, sf::Vector2f((float)WINDOW_SIZE_X, (float)WINDOW_SIZE_Y)),
+	scoreScreen(sf::Vector2f((float)WINDOW_SIZE_X, (float)WINDOW_SIZE_Y))
 {
 	this->setMouseCursorVisible(false);
-	this->activeScreen = PLAY_SCREEN; // TODO: remove once other screens are implemented
+	this->activeScreen = SCORE_SCREEN; // TODO: change to PLAY_SCREEN before merge to master
 }
 
 void GameWindow::displayActiveScreen()
@@ -20,7 +21,7 @@ void GameWindow::displayActiveScreen()
 	}
 	else if (activeScreen == SCORE_SCREEN)
 	{
-		// TODO
+		scoreScreen.display(this);
 	}
 }
 
