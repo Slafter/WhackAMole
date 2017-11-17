@@ -70,7 +70,7 @@ PlayScreen::~PlayScreen()
 	}
 }
 
-void PlayScreen::handleMouseClick(sf::Vector2i mousePos)
+void PlayScreen::handleMouseClick(sf::Vector2i clickPos)
 {
 	// TODO pause button, audio
 
@@ -78,7 +78,7 @@ void PlayScreen::handleMouseClick(sf::Vector2i mousePos)
 	{
 		for (int j = 0; j < NUM_MOLE_HOLE_ROWS; j++)
 		{
-			if (this->mouseClicksMole(mousePos, i, j) && moles[i][j]->isActive)
+			if (this->mouseClicksMole(clickPos, i, j) && moles[i][j]->isActive)
 			{
 				moles[i][j]->isActive = false;
 				molesWhacked++;
@@ -87,16 +87,16 @@ void PlayScreen::handleMouseClick(sf::Vector2i mousePos)
 	}
 }
 
-bool PlayScreen::mouseClicksMole(sf::Vector2i mousePos, int xCoord, int yCoord)
+bool PlayScreen::mouseClicksMole(sf::Vector2i clickPos, int xCoord, int yCoord)
 {
 	int moleCoordX1 = (int)moles[xCoord][yCoord]->getPosition().x - (int)(moleHoleSizeY / 2.0f); // size Y is not a typo
 	int moleCoordX2 = moleCoordX1 + (int)moleHoleSizeY;
 	int moleCoordY1 = (int)moles[xCoord][yCoord]->getPosition().y - (int)(moleHoleSizeY / 2.0f);
 	int moleCoordY2 = moleCoordY1 + (int)moleHoleSizeY;
 
-	if (mousePos.x > moleCoordX1 && mousePos.x < moleCoordX2)
+	if (clickPos.x > moleCoordX1 && clickPos.x < moleCoordX2)
 	{
-		if (mousePos.y > moleCoordY1 && mousePos.y < moleCoordY2)
+		if (clickPos.y > moleCoordY1 && clickPos.y < moleCoordY2)
 		{
 			return true;
 		}
@@ -185,4 +185,38 @@ bool PlayScreen::isGameOver()
 	}
 	else
 		return false;
+}
+
+void PlayScreen::draw(sf::RenderWindow* window)
+{
+	window->clear();
+	window->draw(background);
+
+	for (int i = 0; i < NUM_MOLE_HOLE_COLS; i++)
+	{
+		for (int j = 0; j < NUM_MOLE_HOLE_ROWS; j++)
+		{
+			window->draw(moleHoles[i][j]);
+		}
+	}
+
+	for (int i = 0; i < NUM_MOLE_HOLE_COLS; i++)
+	{
+		for (int j = 0; j < NUM_MOLE_HOLE_ROWS; j++)
+		{
+			if (moles[i][j]->isActive)
+			{
+				window->draw((*moles[i][j]));
+			}
+		}
+	}
+
+	window->draw(timerBarOutline);
+	window->draw(timerBar);
+
+	mousePos = sf::Mouse::getPosition(*window);
+	mousePointer.setPosition((float)mousePos.x, (float)mousePos.y);
+	window->draw(mousePointer);
+
+	window->display();
 }

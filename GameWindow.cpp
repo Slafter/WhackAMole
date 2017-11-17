@@ -12,66 +12,24 @@ void GameWindow::displayActiveScreen()
 {
 	if (activeScreen == START_SCREEN)
 	{
-		this->displayStartScreen();
+		// TODO
 	}
 	else if (activeScreen == PLAY_SCREEN)
 	{
-		this->displayPlayScreen();
+		playScreen.draw(this);
 	}
 	else if (activeScreen == SCORE_SCREEN)
 	{
-		this->displayScoreScreen();
+		// TODO
 	}
 }
 
-void GameWindow::displayStartScreen()
-{
-	// TODO
-}
-
-void GameWindow::displayPlayScreen()
-{
-	this->clear();
-	this->draw(playScreen.background);
-	for (int i = 0; i < PlayScreen::NUM_MOLE_HOLE_COLS; i++)
-	{
-		for (int j = 0; j < PlayScreen::NUM_MOLE_HOLE_ROWS; j++)
-		{
-			this->draw(playScreen.moleHoles[i][j]);
-		}
-	}
-
-	for (int i = 0; i < PlayScreen::NUM_MOLE_HOLE_COLS; i++)
-	{
-		for (int j = 0; j < PlayScreen::NUM_MOLE_HOLE_ROWS; j++)
-		{
-			if (playScreen.moles[i][j]->isActive)
-			{
-				this->draw((*playScreen.moles[i][j]));
-			}
-		}
-	}
-
-	this->draw(playScreen.timerBarOutline);
-	this->draw(playScreen.timerBar);
-	mousePos = sf::Mouse::getPosition(*this);
-	playScreen.mousePointer.setPosition((float)mousePos.x, (float)mousePos.y);
-	
-	this->draw(playScreen.mousePointer);
-
-	this->display();
-
-}
-
-void GameWindow::displayScoreScreen()
-{
-	// TODO
-}
 
 void GameWindow::handleMouseClick()
 {
 	if (activeScreen == PLAY_SCREEN)
 	{
+		mousePos = sf::Mouse::getPosition(*this);
 		playScreen.handleMouseClick(mousePos);
 	}
 }

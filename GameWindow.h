@@ -21,11 +21,6 @@ public:
 	PlayScreen playScreen;
 
 private:
-	void displayStartScreen();
-	void displayPlayScreen();
-	void displayScoreScreen();
-
-private:
 	sf::Vector2i mousePos;
 	int activeScreen;
 };

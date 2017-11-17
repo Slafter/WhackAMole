@@ -29,11 +29,12 @@ public:
 public:
 	PlayScreen(int numCols, int numRows, sf::Vector2f);
 	~PlayScreen();
-	void handleMouseClick(sf::Vector2i mousePos);
+	void handleMouseClick(sf::Vector2i clickPos);
 	void updateActiveMoles();
 	void updateMoleCreationRate();
 	void updateMoleCreation();
 	void updateTimerBar();
+	void draw(sf::RenderWindow* window);
 	bool isGameOver();
 	int getMolesWhacked();
 
@@ -53,6 +54,7 @@ private:
 	sf::Texture moleHoleTexture;
 	sf::Texture backgroundTexture;
 	sf::Texture timerBarTexture;
+	sf::Vector2i mousePos;
 	int molesWhacked;
 	float moleHoleSizeX;
 	float moleHoleSizeY;
