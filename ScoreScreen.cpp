@@ -3,31 +3,56 @@
 ScoreScreen::ScoreScreen(sf::Vector2f windowSize)
 	: background(windowSize)
 {
-	score = 15; // TODO: change to zero before merge to master
+	replayButtonClicked = false;
 
 	backgroundTexture.loadFromFile(BACKGROUND_TEXTURE);
 	background.setTexture(&backgroundTexture);
 
-	// TODO: replay button stuff
+	replayButtonTexture.loadFromFile(REPLAY_TEXTURE);
+	replayButton.setTexture(&replayButtonTexture);
 
 	font.loadFromFile(FONT);
 
 	createHeader();
 	createScoreSection();
 	createDescription();
+	createReplayButton();
 }
 
 void ScoreScreen::display(sf::RenderWindow* window)
 {
 	window->clear();
 	window->draw(background);
-	window->draw(gameOverShadow);
-	window->draw(gameOver);
-	window->draw(scoreOutline);
-	window->draw(scoreText);
-	window->draw(scoreValue);
-	window->draw(scoreDescriptionShadow);
-	window->draw(scoreDescription);
+
+	if (animClock.getElapsedTime().asSeconds() > animInterval)
+	{
+		window->draw(gameOverShadow);
+		window->draw(gameOver);
+	}
+
+	if (animClock.getElapsedTime().asSeconds() > animInterval * 2)
+	{
+		window->draw(scoreOutline);
+		window->draw(scoreText);
+	}
+	
+	if (animClock.getElapsedTime().asSeconds() > animInterval * 3)
+	{
+		window->draw(scoreValue);
+	}
+
+	if (animClock.getElapsedTime().asSeconds() > animInterval * 4)
+	{
+		window->draw(scoreDescriptionShadow);
+		window->draw(scoreDescription);
+	}
+	
+	if (animClock.getElapsedTime().asSeconds() > animInterval * 5)
+	{
+		window->draw(replayButton);
+		window->draw(replayText);
+	}
+
 	window->display();
 }
 
@@ -73,7 +98,7 @@ void ScoreScreen::createScoreSection()
 
 	scoreValue.setFont(font);
 	scoreValue.setCharacterSize(45);
-	scoreValue.setString(std::to_string(score * 100));
+	scoreValue.setString("0");
 	scoreValue.setPosition(sf::Vector2f(435.0f, 220.0f));
 }
 
@@ -90,4 +115,38 @@ void ScoreScreen::createDescription()
 	scoreDescriptionShadow.setFillColor(sf::Color::Black);
 	scoreDescriptionShadow.setString("Great Job!!");
 	scoreDescriptionShadow.setPosition(sf::Vector2f(193.0f, 343.0f));
+}
+
+// to de-clutter the constructor
+void ScoreScreen::createReplayButton()
+{
+	replayButton.setSize(sf::Vector2f(300.0f, 100.0f));
+	replayButton.setPosition(sf::Vector2f(250.0f, 475.0f));
+
+	replayText.setFont(font);
+	replayText.setCharacterSize(40);
+	replayText.setFillColor(sf::Color::White);
+	replayText.setString("PLAY AGAIN");
+	replayText.setPosition(sf::Vector2f(272.0f, 500.0f));
+
+	replayCoordX1 = (int)replayButton.getPosition().x;
+	replayCoordX2 = replayCoordX1 + (int)replayButton.getSize().x;
+	replayCoordY1 = (int)replayButton.getPosition().y;
+	replayCoordY2 = replayCoordY1 + (int)replayButton.getSize().y;
+}
+
+void ScoreScreen::handleMouseClick(sf::Vector2i clickPos)
+{
+	if (clickPos.x > replayCoordX1 && clickPos.x < replayCoordX2)
+	{
+		if (clickPos.y > replayCoordY1 && clickPos.y < replayCoordY2)
+		{
+			replayButtonClicked = true;
+		}
+	}
+}
+
+void ScoreScreen::setScore(int score)
+{
+	scoreValue.setString(std::to_string(score * 100));
 }
