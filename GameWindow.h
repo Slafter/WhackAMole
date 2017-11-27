@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "PlayScreen.h"
+#include "ScoreScreen.h"
 
 class GameWindow : public sf::RenderWindow
 {
@@ -19,6 +20,7 @@ public:
 
 public:
 	PlayScreen playScreen;
+	ScoreScreen scoreScreen;
 
 private:
 	sf::Vector2i mousePos;

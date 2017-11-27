@@ -2,10 +2,11 @@
 
 GameWindow::GameWindow(sf::Uint32 style) 
 	: sf::RenderWindow(sf::VideoMode(WINDOW_SIZE_X, WINDOW_SIZE_Y), "Whack-A-Mole", style), 
-	playScreen(PlayScreen::NUM_MOLE_HOLE_COLS, PlayScreen::NUM_MOLE_HOLE_ROWS, sf::Vector2f((float)WINDOW_SIZE_X, (float)WINDOW_SIZE_Y))
+	playScreen(PlayScreen::NUM_MOLE_HOLE_COLS, PlayScreen::NUM_MOLE_HOLE_ROWS, sf::Vector2f((float)WINDOW_SIZE_X, (float)WINDOW_SIZE_Y)),
+	scoreScreen(sf::Vector2f((float)WINDOW_SIZE_X, (float)WINDOW_SIZE_Y))
 {
 	this->setMouseCursorVisible(false);
-	this->activeScreen = PLAY_SCREEN; // TODO: remove once other screens are implemented
+	this->activeScreen = PLAY_SCREEN;
 }
 
 void GameWindow::displayActiveScreen()
@@ -20,17 +21,22 @@ void GameWindow::displayActiveScreen()
 	}
 	else if (activeScreen == SCORE_SCREEN)
 	{
-		// TODO
+		scoreScreen.display(this);
 	}
 }
 
 
 void GameWindow::handleMouseClick()
 {
+	mousePos = sf::Mouse::getPosition(*this);
+
 	if (activeScreen == PLAY_SCREEN)
 	{
-		mousePos = sf::Mouse::getPosition(*this);
 		playScreen.handleMouseClick(mousePos);
+	}
+	else if (activeScreen == SCORE_SCREEN)
+	{
+		scoreScreen.handleMouseClick(mousePos);
 	}
 }
 
@@ -48,12 +54,20 @@ void GameWindow::updateActiveScreenItems()
 		playScreen.updateActiveMoles();
 		if (playScreen.isGameOver())
 		{
+			this->setMouseCursorVisible(true);
+			scoreScreen.setScore(playScreen.getMolesWhacked());
+			scoreScreen.animClock.restart();
 			activeScreen = SCORE_SCREEN;
 		}
 
 	}
 	else if (activeScreen == SCORE_SCREEN)
 	{
-
+		if (scoreScreen.replayButtonClicked)
+		{
+			this->setMouseCursorVisible(false);
+			scoreScreen.replayButtonClicked = false;
+			activeScreen = PLAY_SCREEN;
+		}
 	}
 }
