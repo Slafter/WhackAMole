@@ -220,3 +220,11 @@ void PlayScreen::draw(sf::RenderWindow* window)
 
 	window->display();
 }
+
+void PlayScreen::reset()
+{
+	molesWhacked = 0;
+	timerBarClock.restart();
+	moleCreationTimer.restart();
+	createMoleFreq = STARTING_MOLE_FREQ;
+}

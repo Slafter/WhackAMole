@@ -67,6 +67,7 @@ void GameWindow::updateActiveScreenItems()
 		{
 			this->setMouseCursorVisible(false);
 			scoreScreen.replayButtonClicked = false;
+			playScreen.reset();
 			activeScreen = PLAY_SCREEN;
 		}
 	}

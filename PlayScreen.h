@@ -37,6 +37,7 @@ public:
 	void draw(sf::RenderWindow* window);
 	bool isGameOver();
 	int getMolesWhacked();
+	void reset();
 
 public:
 	sf::RectangleShape background; // TODO: sf::Texture backgroundTexture;
