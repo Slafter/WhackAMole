@@ -7,7 +7,7 @@
 class PlayScreen
 {
 public:
-	const std::string MOLE_HOLE_TEXTURE = "images/ellipse3.png";
+	const std::string MOLE_HOLE_TEXTURE = "images/ellipse4.png";
 	const std::string MOUSE_TEXTURE = "images/hammer.png";
 	const std::string BACKGROUND_TEXTURE = "images/PSbackground.png";
 	const std::string TIMERBAR_TEXTURE = "images/timerbar.png";
