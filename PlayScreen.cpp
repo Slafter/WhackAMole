@@ -78,9 +78,9 @@ void PlayScreen::handleMouseClick(sf::Vector2i clickPos)
 	{
 		for (int j = 0; j < NUM_MOLE_HOLE_ROWS; j++)
 		{
-			if (this->mouseClicksMole(clickPos, i, j) && moles[i][j]->isActive)
+			if (this->mouseClicksMole(clickPos, i, j) && moles[i][j]->isActive && !moles[i][j]->isClicked)
 			{
-				moles[i][j]->isActive = false;
+				moles[i][j]->isClicked = true;
 				molesWhacked++;
 			}
 		}
