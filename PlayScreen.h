@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <vector>
 #include "Mole.h"
+#include "FloatingText.h"
 
 class PlayScreen
 {
@@ -11,6 +12,7 @@ public:
 	const std::string MOUSE_TEXTURE = "images/hammer.png";
 	const std::string BACKGROUND_TEXTURE = "images/PSbackground.png";
 	const std::string TIMERBAR_TEXTURE = "images/timerbar.png";
+	const std::string FONT = "fonts/uni0553-webfont.ttf";
 	const float MOUSE_POINTER_SIZE_X = 100.0f;
 	const float MOUSE_POINTER_SIZE_Y = 100.0f;
 	const static int NUM_MOLE_HOLE_COLS = 3;
@@ -34,6 +36,7 @@ public:
 	void updateMoleCreationRate();
 	void updateMoleCreation();
 	void updateTimerBar();
+	void updateClickText();
 	void draw(sf::RenderWindow* window);
 	bool isGameOver();
 	int getMolesWhacked();
@@ -46,6 +49,8 @@ public:
 	sf::RectangleShape timerBarOutline;
 	sf::RectangleShape moleHoles[NUM_MOLE_HOLE_COLS][NUM_MOLE_HOLE_ROWS];
 	Mole* moles[NUM_MOLE_HOLE_COLS][NUM_MOLE_HOLE_ROWS];
+	std::vector<FloatingText> moleClickText;
+	std::vector<FloatingText>::iterator iter;
 
 private:
 	bool mouseClicksMole(sf::Vector2i mousePos, int xCoord, int yCoord);
@@ -63,4 +68,6 @@ private:
 	sf::Clock moleCreationTimer;
 	float moleDeltaTime;
 	float createMoleFreq;
+	sf::Font font;
+	bool clickTextRotation;
 };

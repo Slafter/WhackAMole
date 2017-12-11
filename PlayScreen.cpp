@@ -12,6 +12,8 @@ PlayScreen::PlayScreen(int numCols, int numRows, sf::Vector2f windowSize)
 	moleDeltaTime = 0;
 	createMoleFreq = STARTING_MOLE_FREQ;
 
+	font.loadFromFile(FONT);
+
 	backgroundTexture.loadFromFile(BACKGROUND_TEXTURE);
 	background.setTexture(&backgroundTexture);
 
@@ -80,8 +82,20 @@ void PlayScreen::handleMouseClick(sf::Vector2i clickPos)
 		{
 			if (this->mouseClicksMole(clickPos, i, j) && moles[i][j]->isActive)
 			{
-				moles[i][j]->isActive = false;
-				molesWhacked++;
+				if (clickTextRotation)
+					clickTextRotation = false;
+				else
+					clickTextRotation = true;
+
+				moleClickText.push_back(FloatingText(sf::Vector2f((float)clickPos.x, (float)clickPos.y), font, clickTextRotation));
+
+				// only the first click counts towards points
+				if (!moles[i][j]->isClicked)
+				{
+					moles[i][j]->isClicked = true;
+					molesWhacked++;
+				}
+
 			}
 		}
 	}
@@ -177,6 +191,21 @@ void PlayScreen::updateTimerBar()
 	timerBar.setSize(sf::Vector2f(((GAMEOVER_TIME - timerBarClock.getElapsedTime().asSeconds()) / GAMEOVER_TIME) * TIMER_BAR_SIZE_X, TIMER_BAR_SIZE_Y));
 }
 
+void PlayScreen::updateClickText()
+{
+	for (iter = moleClickText.begin(); iter < moleClickText.end(); iter++)
+	{
+		(*iter).update();
+	}
+
+	if (moleClickText.size() > 0)
+	{
+		if (!moleClickText[0].isActive)
+			moleClickText.erase(moleClickText.begin());
+	}
+
+}
+
 bool PlayScreen::isGameOver()
 {
 	if (timerBarClock.getElapsedTime().asSeconds() >= GAMEOVER_TIME)
@@ -217,6 +246,17 @@ void PlayScreen::draw(sf::RenderWindow* window)
 	mousePos = sf::Mouse::getPosition(*window);
 	mousePointer.setPosition((float)mousePos.x, (float)mousePos.y);
 	window->draw(mousePointer);
+
+	for (iter = moleClickText.begin(); iter < moleClickText.end(); iter++)
+	{
+		std::string s = (std::string)((*iter).text.getString());
+		sf::Text t(s, font);
+		t.setOrigin(sf::Vector2f(55.0f, 5.0f));
+		t.setPosition((*iter).text.getPosition());
+		t.setRotation((*iter).text.getRotation());
+		t.setFillColor((*iter).text.getFillColor());
+		window->draw(t);
+	}
 
 	window->display();
 }
