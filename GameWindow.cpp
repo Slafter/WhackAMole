@@ -17,7 +17,7 @@ void GameWindow::displayActiveScreen()
 	}
 	else if (activeScreen == PLAY_SCREEN)
 	{
-		playScreen.draw(this);
+		playScreen.draw(this); // TODO: change function name to 'display'
 	}
 	else if (activeScreen == SCORE_SCREEN)
 	{
@@ -48,10 +48,11 @@ void GameWindow::updateActiveScreenItems()
 	}
 	else if (activeScreen == PLAY_SCREEN)
 	{
-		playScreen.updateTimerBar();
+		playScreen.updateTimerBar(); // TODO: consolidate into one function call
 		playScreen.updateMoleCreationRate();
 		playScreen.updateMoleCreation();
 		playScreen.updateActiveMoles();
+		playScreen.updateClickText();
 		if (playScreen.isGameOver())
 		{
 			this->setMouseCursorVisible(true);
